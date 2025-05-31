@@ -2,7 +2,7 @@ package duoc.perfulandia.model;
 
 import jakarta.persistence.*;
 
-// >> FUNCIONA, NO TOCAR.
+// REVISAR CÓMO SE RELACIONA CON LA ORDEN:
 @Entity
 @Table(name = "order_product")
 public class OrderProduct {
