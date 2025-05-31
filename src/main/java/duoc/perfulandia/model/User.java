@@ -28,8 +28,6 @@ public class User {
     @JsonBackReference
     private List<Order> orders;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonBackReference
-    private List<Cart> cart;
-
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Cart cart;
 }
