@@ -19,10 +19,8 @@ public class CartService {
 
     @Autowired
     private UserRepo userRepo;
-
     @Autowired
     private OrderRepo orderRepo;
-
     @Autowired
     private CartRepo cartRepo;
 
@@ -101,7 +99,42 @@ public class CartService {
         return cartRepo.save(cart);
     }
 
-    //checkout method :: HACER
+    public Order checkout(Long userId){
+        // validar user
+        Optional<User> userOpt = userRepo.findById(userId);
+        if (userOpt.isEmpty()) {
+            throw new RuntimeException("Usuario no encontrado con ID: " + userId);
+        }
+        // get carrito
+        Cart selectedCart = getCartByUserId(userId);
+        if (selectedCart.getItems() == null) {
+            throw new RuntimeException("El carrito está vacío de USERID: " + userId);
+        }
+        // generar orden desde carrito
+        Order order = new Order();
+        order.setUser(userOpt.get());
+        order.setOrderDate(LocalDateTime.now());
+        List<OrderProduct> orderItems = new ArrayList<>();
+        for (CartItem cartItem : selectedCart.getItems()) {
+            OrderProduct orderItem = new OrderProduct();
+            orderItem.setProduct(cartItem.getProduct());
+            orderItem.setQuantity(cartItem.getQuantity());
+            orderItem.setOrder(order);
+            orderItems.add(orderItem);
+        }
+        order.setOrderProducts(orderItems);
+
+        // vaciar carrito, para uso posterior de otras ordenes.
+        // REVISAR SI ES QUE ESTO NO CREA UN CARRITO DUPLICADO(cascade, orphanremoval, etc)
+        for (CartItem item : selectedCart.getItems()) {
+            item.setCart(null);
+        }
+        selectedCart.getItems().clear();
+        cartRepo.save(selectedCart);
+        return orderRepo.save(order);
+    }
+
+    //checkout method :: HACER --> CHECKOUT METHOD LISTO, PROBAR.
     /* public Order checkout(Long userId){
         Cart cart = getCartByUserId(userId);
 

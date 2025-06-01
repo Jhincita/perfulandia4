@@ -1,8 +1,16 @@
 package duoc.perfulandia.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 // REVISAR CÓMO SE RELACIONA CON LA ORDEN:
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "order_product")
 public class OrderProduct {
