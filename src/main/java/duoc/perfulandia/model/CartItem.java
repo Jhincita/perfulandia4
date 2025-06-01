@@ -30,4 +30,5 @@ public class CartItem {
 
     private int inventory;
     private int priceAtCheckout;
+    private int quantity;
 }

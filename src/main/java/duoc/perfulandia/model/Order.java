@@ -6,7 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -24,8 +25,9 @@ public class Order {
     @OneToMany(mappedBy = "order")
     private List<OrderProduct> orderProducts;
 
-    private Date orderDate;
+    private LocalDateTime orderDate;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+    private int total;
 }

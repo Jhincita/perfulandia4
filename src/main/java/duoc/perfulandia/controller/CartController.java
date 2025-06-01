@@ -37,5 +37,19 @@ public class CartController {
             return ResponseEntity.notFound().build();
         }
     }
-    // delete
+    // update
+    @PutMapping("/{userId}/items/{itemId}")
+    public ResponseEntity<Cart> updateItemQuantity(
+            @PathVariable Long userId,
+            @PathVariable Long itemId,
+            @RequestParam int quantity) {
+
+        try {
+            Cart cart = cartService.updateItemQuantity(userId, itemId, quantity);
+            return ResponseEntity.ok(cart);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
 }

@@ -1,13 +1,12 @@
 package duoc.perfulandia.service;
-import duoc.perfulandia.model.Cart;
-import duoc.perfulandia.model.CartItem;
+import duoc.perfulandia.model.*;
 import duoc.perfulandia.model.Repo.CartRepo;
 import duoc.perfulandia.model.Repo.OrderRepo;
 import duoc.perfulandia.model.Repo.UserRepo;
-import duoc.perfulandia.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -61,10 +60,24 @@ public class CartService {
     }
 
     // add item
+    /*
     public Cart addItemToCart(Long userId, CartItem item) {
         Cart cart = getCartByUserId(userId);
         cart.getItems().add(item);
         item.setCart(cart);
+        return cartRepo.save(cart);
+    }*/
+
+    public Cart addItemToCart(Long userId, CartItem newItem) {
+        Cart cart = getCartByUserId(userId);
+        for (CartItem existingItem : cart.getItems()) {
+            if (existingItem.getProduct().getId().equals(newItem.getProduct().getId())) {
+                existingItem.setQuantity(existingItem.getQuantity() + newItem.getQuantity());
+                return cartRepo.save(cart);
+            }
+        }
+        newItem.setCart(cart);
+        cart.getItems().add(newItem);
         return cartRepo.save(cart);
     }
 
@@ -76,6 +89,32 @@ public class CartService {
         return cartRepo.save(cart);
     }
 
+    //update cantidad deitems
+    public Cart updateItemQuantity(Long userId, Long itemId, int quantity) {
+        Cart cart = getCartByUserId(userId);
+        for (CartItem item : cart.getItems()) {
+            if (item.getId().equals(itemId)) {
+                item.setQuantity(quantity);
+                break;
+            }
+        }
+        return cartRepo.save(cart);
+    }
 
+    //checkout method :: HACER
+    /* public Order checkout(Long userId){
+        Cart cart = getCartByUserId(userId);
+
+        for (CartItem cartItem : cart.getItems()) {
+            Product product = cartItem.getProduct();
+            if (product.getInventory()< cartItem.getQuantity()) {
+                throw new RuntimeException("No hay suficiente stock de " + product.getName());
+            }
+        }
+        Order order = new Order();
+        order.setUser(cart.getUser());
+        order.setOrderDate(LocalDateTime.now());
+
+    } */
 
 }
