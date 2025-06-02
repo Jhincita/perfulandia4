@@ -1,0 +1,142 @@
+-- CREATE TABLES
+CREATE TABLE users (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255),
+    email VARCHAR(255),
+    password VARCHAR(255)
+);
+
+CREATE TABLE session_token (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    token VARCHAR(255),
+    is_active BOOLEAN
+);
+
+CREATE TABLE category (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255)
+);
+
+CREATE TABLE product (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    brand VARCHAR(255),
+    notes TEXT,
+    price INT,
+    category_id BIGINT,
+    ml INT,
+    inventory INT,
+    CONSTRAINT fk_product_category FOREIGN KEY (category_id) REFERENCES category(id)
+);
+
+CREATE TABLE orders (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    order_date DATETIME,
+    user_id BIGINT NOT NULL,
+    total INT,
+    status VARCHAR(50) NOT NULL DEFAULT 'PAYMENT_PENDING',
+    payment_date DATETIME DEFAULT NULL,
+    total_paid INT DEFAULT NULL,
+    CONSTRAINT fk_orders_user FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE order_product (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    order_id BIGINT,
+    product_id BIGINT,
+    quantity INT,
+    buy_price BIGINT,
+    CONSTRAINT fk_orderproduct_order FOREIGN KEY (order_id) REFERENCES orders(id),
+    CONSTRAINT fk_orderproduct_product FOREIGN KEY (product_id) REFERENCES product(id)
+);
+
+CREATE TABLE cart (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT UNIQUE,
+    CONSTRAINT fk_cart_user FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+
+CREATE TABLE cart_item (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    cart_id BIGINT,
+    product_id BIGINT NOT NULL,
+    inventory INT,
+    price_at_checkout INT,
+    quantity INT,
+    CONSTRAINT fk_cartitem_cart FOREIGN KEY (cart_id) REFERENCES cart(id),
+    CONSTRAINT fk_cartitem_product FOREIGN KEY (product_id) REFERENCES product(id)
+);
+
+-- INSERT users
+INSERT INTO users (username, email, password) VALUES
+('Jojito', 'jojito@jmail.com', 'jojitopass4'),
+('Yanfri', 'yanfri@jmail.com', 'yanfripass4'),
+('Pancito', 'pancito@jmail.com', 'pancitopass4'),
+('Lestat', 'lestat@jmail.com', 'lestatpass4'),
+('Genocidiotakeo', 'genocidiotakeo@jmail.com', 'genopass4'),
+('Tototiramisu', 'tototiramisu@jmail.com', 'totopass4');
+
+
+-- INSERT category
+INSERT INTO category (name) VALUES
+('C�tricos'),
+('Florales'),
+('Amaderados'),
+('Orientales'),
+('Frescos');
+
+-- INSERT INTO product
+-- PRADA
+INSERT INTO product (name, brand, notes, price, ml, inventory, category_id) VALUES
+('Prada Luna Rossa Carbon', 'Prada', 'Notas met�licas, lavanda, madera de gaiac', 120, 100, 50, 3),  -- Amaderado
+('Prada Infusion d\'Iris', 'Prada', 'Iris, neroli, �mbar', 110, 100, 30, 2),  -- Floral
+('Prada Amber', 'Prada', '�mbar, pachul�, benju�', 130, 100, 20, 4),  -- Oriental
+('Prada Citrus', 'Prada', 'Lim�n, bergamota, mandarina', 100, 100, 25, 1);  -- C�trico
+
+-- DYPTIQUE
+INSERT INTO product (name, brand, notes, price, ml, inventory, category_id) VALUES
+('Philosykos', 'Dyptique', 'Higo, hojas de higuera, madera', 140, 100, 40, 3),  -- Amaderado
+('Eau Rose', 'Dyptique', 'Rosa, lichis, cedro', 130, 100, 35, 2),  -- Floral
+('Ombre Satin�e', 'Dyptique', 'Incienso, pachul�, cuero', 150, 100, 20, 4),  -- Oriental
+('Eau de Lierre', 'Dyptique', 'Hiedra, menta, lim�n', 110, 100, 30, 1);  -- C�trico
+
+-- BYREDO
+INSERT INTO product (name, brand, notes, price, ml, inventory, category_id) VALUES
+('Gypsy Water', 'Byredo', 'Enebro, lim�n, vainilla', 160, 100, 45, 1),  -- C�trico
+('Bal d�Afrique', 'Byredo', 'Flor de naranja, jazm�n, pachul�', 170, 100, 40, 2),  -- Floral
+('Mojave Ghost', 'Byredo', 'Ambar, magnolia, maderas claras', 180, 100, 35, 3),  -- Amaderado
+('Black Saffron', 'Byredo', 'Azafr�n, cuero, vetiver', 190, 100, 20, 4);  -- Oriental
+
+-- PERRIS PORTOFINO Fiori di Mare)
+INSERT INTO product (name, brand, notes, price, ml, inventory, category_id) VALUES
+('Fiori di Mare', 'Perris Monte Carlo', 'Flores marinas, jazm�n, almizcle', 150, 100, 25, 2),  -- Floral
+
+-- MONTALE
+INSERT INTO product (name, brand, notes, price, ml, inventory, category_id) VALUES
+('Montale Intense Cafe', 'Montale', 'Rosa, caf�, vainilla', 180, 100, 40, 2),  -- Floral
+('Montale Black Aoud', 'Montale', 'Oud, rosa, �mbar', 190, 100, 30, 4),  -- Oriental
+('Montale Red Vetyver', 'Montale', 'Vetiver, madera de gaiac, pomelo', 175, 100, 25, 3),  -- Amaderado
+('Montale Aoud Lime', 'Montale', 'Oud, lima, cedro', 185, 100, 20, 1);  -- C�trico
+
+-- KILLIAN
+INSERT INTO product (name, brand, notes, price, ml, inventory, category_id) VALUES
+('Love, Don�t Be Shy', 'Killian', 'Naranja amarga, caramelo, vainilla', 210, 100, 15, 1),  -- C�trico
+('Good Girl Gone Bad', 'Killian', 'Jazm�n, fresia, almizcle', 220, 100, 18, 2),  -- Floral
+('Black Phantom', 'Killian', 'Rhum, caf�, chocolate', 230, 100, 20, 4),  -- Oriental
+('Straight to Heaven', 'Killian', 'Ron, patchouli, madera', 225, 100, 22, 3);  -- Amaderado
+
+-- 4 Cool Niche Perfumes (examples)
+INSERT INTO product (name, brand, notes, price, ml, inventory, category_id) VALUES
+('Amouage Interlude', 'Amouage', 'Incienso, �mbar, or�gano', 300, 100, 10, 4),  -- Oriental
+('Le Labo Santal 33', 'Le Labo', 'S�ndalo, cedro, cuero', 280, 100, 12, 3),  -- Amaderado
+('Maison Francis Kurkdjian Aqua Celestia', 'MFK', 'Lim�n, menta, grosella negra', 260, 100, 15, 1),  -- C�trico
+('Serge Lutens Fille en Aiguilles', 'Serge Lutens', 'Pino, abeto, resinas', 270, 100, 11, 3);  -- Amaderado
+
+-- 4 Citric Perfumes (focused only on citrus notes, can overlap brands above)
+INSERT INTO product (name, brand, notes, price, ml, inventory, category_id) VALUES
+('Clinique Happy', 'Clinique', 'Mandarina, bergamota, flor de manzano', 90, 100, 50, 1),  -- C�trico
+('Herm�s Eau d\'Orange Verte', 'Herm�s', 'Naranja verde, lim�n, menta', 95, 100, 40, 1),  -- C�trico
+('Jo Malone Lime Basil & Mandarin', 'Jo Malone', 'Lima, albahaca, mandarina', 120, 100, 35, 1),  -- C�trico
+('Dolce & Gabbana Light Blue', 'Dolce & Gabbana', 'Lim�n siciliano, manzana, cedro', 110, 100, 45, 1);  -- C�trico
+
