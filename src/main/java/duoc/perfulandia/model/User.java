@@ -1,5 +1,6 @@
 package duoc.perfulandia.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,7 +26,7 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user") // sin orphan removallñ para no borrar las ordenes si se borra el usuario
-    @JsonBackReference
+    @JsonManagedReference
     private List<Order> orders;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)

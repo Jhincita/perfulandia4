@@ -2,11 +2,8 @@ package duoc.perfulandia.controller;
 import duoc.perfulandia.model.Cart;
 import duoc.perfulandia.model.CartItem;
 import duoc.perfulandia.service.CartService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/cart")
@@ -37,8 +34,8 @@ public class CartController {
             return ResponseEntity.notFound().build();
         }
     }
-    // update
-    @PutMapping("/{userId}/items/{itemId}")
+    // update cantidad
+    @PutMapping("/{userId}/quantity/{itemId}")
     public ResponseEntity<Cart> updateItemQuantity(
             @PathVariable Long userId,
             @PathVariable Long itemId,
@@ -51,5 +48,16 @@ public class CartController {
             return ResponseEntity.badRequest().body(null);
         }
     }
+
+    // HACWER ADDTOCART -> revisar si funciona bien
+
+    @PostMapping("/{userId}/add")
+    public Cart addToCart(@PathVariable Long userId, @RequestBody CartItem cartItem) {
+        return cartService.addToCart(userId, cartItem);
+    }
+
+
+
+
 
 }
