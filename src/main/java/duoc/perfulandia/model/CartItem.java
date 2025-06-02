@@ -28,7 +28,5 @@ public class CartItem {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    private int inventory;
-    private int priceAtCheckout;
     private int quantity;
 }

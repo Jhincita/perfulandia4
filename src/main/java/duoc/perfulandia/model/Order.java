@@ -30,4 +30,8 @@ public class Order {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
     private int total;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private OrderStatus status;
 }

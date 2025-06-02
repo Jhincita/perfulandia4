@@ -2,6 +2,7 @@ package duoc.perfulandia.service;
 import duoc.perfulandia.model.*;
 import duoc.perfulandia.model.Repo.CartRepo;
 import duoc.perfulandia.model.Repo.OrderRepo;
+import duoc.perfulandia.model.Repo.ProductRepo;
 import duoc.perfulandia.model.Repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import org.springframework.stereotype.Service;
+
 // Este va a reemplazar el orderservice y el sellservice
 // este creará ordenes y ventas.
 @Service
@@ -23,6 +24,8 @@ public class CartService {
     private OrderRepo orderRepo;
     @Autowired
     private CartRepo cartRepo;
+    @Autowired
+    private ProductRepo productRepo;
 
     // create by userid
     public Cart createCart(Long userId) {
@@ -57,17 +60,17 @@ public class CartService {
         cartRepo.deleteById(cartId);
     }
 
-    // add item
-    /*
-    public Cart addItemToCart(Long userId, CartItem item) {
-        Cart cart = getCartByUserId(userId);
-        cart.getItems().add(item);
-        item.setCart(cart);
-        return cartRepo.save(cart);
-    }*/
+    // add item -> arreglar
 
-    public Cart addItemToCart(Long userId, CartItem newItem) {
+    public Cart addToCart(Long userId, CartItem newItem) {
         Cart cart = getCartByUserId(userId);
+
+        // validar producto
+        if (newItem.getProduct() == null || newItem.getProduct().getId() == null) {
+            throw new RuntimeException("Product must have a valid ID");
+        }
+
+        //  actualizar cantidad si el producto ya está en carrito:
         for (CartItem existingItem : cart.getItems()) {
             if (existingItem.getProduct().getId().equals(newItem.getProduct().getId())) {
                 existingItem.setQuantity(existingItem.getQuantity() + newItem.getQuantity());
@@ -78,6 +81,7 @@ public class CartService {
         cart.getItems().add(newItem);
         return cartRepo.save(cart);
     }
+
 
     // remove item
     public Cart removeItemFromCart(Long userId, Long itemId) {
@@ -99,7 +103,8 @@ public class CartService {
         return cartRepo.save(cart);
     }
 
-    public Order checkout(Long userId){
+    // 1er paso del checkout: crear orden
+    public Order checkoutNewOrder(Long userId){
         // validar user
         Optional<User> userOpt = userRepo.findById(userId);
         if (userOpt.isEmpty()) {
@@ -114,15 +119,21 @@ public class CartService {
         Order order = new Order();
         order.setUser(userOpt.get());
         order.setOrderDate(LocalDateTime.now());
+
         List<OrderProduct> orderItems = new ArrayList<>();
+        int total = 0;
+
         for (CartItem cartItem : selectedCart.getItems()) {
             OrderProduct orderItem = new OrderProduct();
             orderItem.setProduct(cartItem.getProduct());
             orderItem.setQuantity(cartItem.getQuantity());
             orderItem.setOrder(order);
             orderItems.add(orderItem);
+            total += cartItem.getProduct().getPrice() * cartItem.getQuantity();
         }
         order.setOrderProducts(orderItems);
+        order.setTotal(total);
+        order.setStatus(OrderStatus.PAYMENT_PENDING);
 
         // vaciar carrito, para uso posterior de otras ordenes.
         // REVISAR SI ES QUE ESTO NO CREA UN CARRITO DUPLICADO(cascade, orphanremoval, etc)
@@ -133,6 +144,10 @@ public class CartService {
         cartRepo.save(selectedCart);
         return orderRepo.save(order);
     }
+
+    // 2do paso checkout: pagar --> HACER.
+
+
 
     //checkout method :: HACER --> CHECKOUT METHOD LISTO, PROBAR.
     /* public Order checkout(Long userId){
