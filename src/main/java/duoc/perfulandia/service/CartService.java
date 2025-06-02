@@ -13,8 +13,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-// Este va a reemplazar el orderservice y el sellservice
-// este creará ordenes y ventas.
+// AGREGAR Y QUITAR ITEMS DE CARRITO, MANEJO DE CARRITO.
 @Service
 public class CartService {
 
@@ -103,53 +102,7 @@ public class CartService {
         return cartRepo.save(cart);
     }
 
-    // 1er paso del checkout: crear orden
-    public Order checkoutNewOrder(Long userId){
-        // validar user
-        Optional<User> userOpt = userRepo.findById(userId);
-        if (userOpt.isEmpty()) {
-            throw new RuntimeException("Usuario no encontrado con ID: " + userId);
-        }
-        // get carrito
-        Cart selectedCart = getCartByUserId(userId);
-        if (selectedCart.getItems() == null) {
-            throw new RuntimeException("El carrito está vacío de USERID: " + userId);
-        }
-        // generar orden desde carrito
-        Order order = new Order();
-        order.setUser(userOpt.get());
-        order.setOrderDate(LocalDateTime.now());
-
-        List<OrderProduct> orderItems = new ArrayList<>();
-        int total = 0;
-
-        for (CartItem cartItem : selectedCart.getItems()) {
-            OrderProduct orderItem = new OrderProduct();
-            orderItem.setProduct(cartItem.getProduct());
-            orderItem.setQuantity(cartItem.getQuantity());
-            orderItem.setOrder(order);
-            orderItems.add(orderItem);
-            total += cartItem.getProduct().getPrice() * cartItem.getQuantity();
-        }
-        order.setOrderProducts(orderItems);
-        order.setTotal(total);
-        order.setStatus(OrderStatus.PAYMENT_PENDING);
-
-        // vaciar carrito, para uso posterior de otras ordenes.
-        // REVISAR SI ES QUE ESTO NO CREA UN CARRITO DUPLICADO(cascade, orphanremoval, etc)
-        for (CartItem item : selectedCart.getItems()) {
-            item.setCart(null);
-        }
-        selectedCart.getItems().clear();
-        cartRepo.save(selectedCart);
-        return orderRepo.save(order);
-    }
-
-    // 2do paso checkout: pagar --> HACER.
-
-
-
-    //checkout method :: HACER --> CHECKOUT METHOD LISTO, PROBAR.
+    //checkout method :: HACER --> CHECKOUT METHOD LISTO, PROBAR.  >> metodo migrado a OrderService.
     /* public Order checkout(Long userId){
         Cart cart = getCartByUserId(userId);
 
