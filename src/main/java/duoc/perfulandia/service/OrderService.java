@@ -39,8 +39,8 @@ public class OrderService {
         return orderRepo.findByUser(userRepo.findById(userId));
     }
 
-    public Order getLatestByUserId(String userId) {
-        return orderRepo.findTopByUserIdOrderByOrderDateDesc(Long.valueOf(userId));
+    public Order getLatestByUserId(Long userId) {
+        return orderRepo.findTopByUserIdOrderByOrderDateDesc(userId);
     }
 
     // para pagar.
@@ -91,7 +91,6 @@ public class OrderService {
         return orderRepo.save(order);
     }
 
-    // 2do paso checkout: pagar --> STATUS: PROCESSING
-
+    // 2do paso checkout: pagar --> STATUS: PROCESSING -> en transacgtionservice
 
 }
