@@ -101,5 +101,21 @@ public class CartService {
         }
         return cartRepo.save(cart);
     }
+
     //checkout method :: HACER --> CHECKOUT METHOD LISTO, PROBAR.  >> metodo migrado a OrderService.
+    /* public Order checkout(Long userId){
+        Cart cart = getCartByUserId(userId);
+
+        for (CartItem cartItem : cart.getItems()) {
+            Product product = cartItem.getProduct();
+            if (product.getInventory()< cartItem.getQuantity()) {
+                throw new RuntimeException("No hay suficiente stock de " + product.getName());
+            }
+        }
+        Order order = new Order();
+        order.setUser(cart.getUser());
+        order.setOrderDate(LocalDateTime.now());
+
+    } */
+
 }

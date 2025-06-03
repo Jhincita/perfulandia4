@@ -49,7 +49,7 @@ public class CartController {
         }
     }
 
-    // HACWER ADDTOCART -> revisar si funciona bien -> funciona
+    // HACWER ADDTOCART -> revisar si funciona bien
 
     @PostMapping("/{userId}/add")
     public Cart addToCart(@PathVariable Long userId, @RequestBody CartItem cartItem) {
