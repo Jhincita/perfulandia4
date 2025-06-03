@@ -4,3 +4,130 @@
 2. descargar repositorio en formato ZIP
 3. abrir XAMPP mysql y apache
 4. descomprimir repositorio y abrir con VS code
+
+script db: mysql:
+
+-- CREATE TABLES
+CREATE TABLE users (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255),
+    email VARCHAR(255),
+    password VARCHAR(255)
+);
+
+CREATE TABLE session_token (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    token VARCHAR(255),
+    is_active BOOLEAN
+);
+
+CREATE TABLE category (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255)
+);
+
+CREATE TABLE product (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    brand VARCHAR(255),
+    notes TEXT,
+    price INT,
+    category_id BIGINT,
+    ml INT,
+    inventory INT,
+    CONSTRAINT fk_product_category FOREIGN KEY (category_id) REFERENCES category(id)
+);
+
+CREATE TABLE orders (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    order_date DATETIME,
+    user_id BIGINT NOT NULL,
+    total INT,
+    status VARCHAR(50) NOT NULL DEFAULT 'PAYMENT_PENDING',
+    payment_date DATETIME DEFAULT NULL,
+    total_paid INT DEFAULT NULL,
+    CONSTRAINT fk_orders_user FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE order_product (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    order_id BIGINT,
+    product_id BIGINT,
+    quantity INT,
+    buy_price BIGINT,
+    CONSTRAINT fk_orderproduct_order FOREIGN KEY (order_id) REFERENCES orders(id),
+    CONSTRAINT fk_orderproduct_product FOREIGN KEY (product_id) REFERENCES product(id)
+);
+
+CREATE TABLE cart (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT UNIQUE,
+    CONSTRAINT fk_cart_user FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE cart_item (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    cart_id BIGINT,
+    product_id BIGINT NOT NULL,
+    inventory INT,
+    price_at_checkout INT,
+    quantity INT,
+    CONSTRAINT fk_cartitem_cart FOREIGN KEY (cart_id) REFERENCES cart(id),
+    CONSTRAINT fk_cartitem_product FOREIGN KEY (product_id) REFERENCES product(id)
+);
+
+-- INSERT users
+INSERT INTO users (username, email, password) VALUES
+('Jojito', 'jojito@jmail.com', 'jojitopass4'),
+('Yanfri', 'yanfri@jmail.com', 'yanfripass4'),
+('Pancito', 'pancito@jmail.com', 'pancitopass4'),
+('Lestat', 'lestat@jmail.com', 'lestatpass4'),
+('Genocidiotakeo', 'genocidiotakeo@jmail.com', 'genopass4'),
+('Tototiramisu', 'tototiramisu@jmail.com', 'totopass4');
+
+-- INSERT category
+INSERT INTO category (name) VALUES
+('Citricos'),
+('Florales'),
+('Amaderados'),
+('Orientales'),
+('Frescos');
+
+-- INSERT INTO product
+INSERT INTO product (name, brand, notes, price, ml, inventory, category_id) VALUES
+('Prada Luna Rossa Carbon', 'Prada', 'Notas metalicas, lavanda, madera de gaiac', 120, 100, 50, 3),
+('Prada Infusion d Iris', 'Prada', 'Iris, neroli, ambar', 110, 100, 30, 2),
+('Prada Amber', 'Prada', 'Ambar, pachuli, benjui', 130, 100, 20, 4),
+('Prada Citrus', 'Prada', 'Limon, bergamota, mandarina', 100, 100, 25, 1),
+
+('Philosykos', 'Dyptique', 'Higo, hojas de higuera, madera', 140, 100, 40, 3),
+('Eau Rose', 'Dyptique', 'Rosa, lichis, cedro', 130, 100, 35, 2),
+('Ombre Satinee', 'Dyptique', 'Incienso, pachuli, cuero', 150, 100, 20, 4),
+('Eau de Lierre', 'Dyptique', 'Hiedra, menta, limon', 110, 100, 30, 1),
+
+('Gypsy Water', 'Byredo', 'Enebro, limon, vainilla', 160, 100, 45, 1),
+('Bal d Afrique', 'Byredo', 'Flor de naranja, jazmin, pachuli', 170, 100, 40, 2),
+('Mojave Ghost', 'Byredo', 'Ambar, magnolia, maderas claras', 180, 100, 35, 3),
+('Black Saffron', 'Byredo', 'Azafran, cuero, vetiver', 190, 100, 20, 4),
+
+('Fiori di Mare', 'Perris Monte Carlo', 'Flores marinas, jazmin, almizcle', 150, 100, 25, 2),
+
+('Montale Intense Cafe', 'Montale', 'Rosa, cafe, vainilla', 180, 100, 40, 2),
+('Montale Black Aoud', 'Montale', 'Oud, rosa, ambar', 190, 100, 30, 4),
+('Montale Red Vetyver', 'Montale', 'Vetiver, madera de gaiac, pomelo', 175, 100, 25, 3),
+('Montale Aoud Lime', 'Montale', 'Oud, lima, cedro', 185, 100, 20, 1),
+
+('Love, Dont Be Shy', 'Killian', 'Naranja amarga, caramelo, vainilla', 210, 100, 15, 1),
+('Good Girl Gone Bad', 'Killian', 'Jazmin, fresia, almizcle', 220, 100, 18, 2),
+('Black Phantom', 'Killian', 'Rhum, cafe, chocolate', 230, 100, 20, 4),
+('Straight to Heaven', 'Killian', 'Ron, patchouli, madera', 225, 100, 22, 3),
+
+('Amouage Interlude', 'Amouage', 'Incienso, ambar, oregano', 300, 100, 10, 4),
+('Le Labo Santal 33', 'Le Labo', 'Sandalo, cedro, cuero', 280, 100, 12, 3),
+('Maison Francis Kurkdjian Aqua Celestia', 'MFK', 'Limon, menta, grosella negra', 260, 100, 15, 1),
+('Serge Lutens Fille en Aiguilles', 'Serge Lutens', 'Pino, abeto, resinas', 270, 100, 11, 3),
+
+('Clinique Happy', 'Clinique', 'Mandarina, bergamota, flor de manzano', 90, 100, 50, 1),
+('Hermes Eau d Orange Verte', 'Hermes', 'Naranja verde, limon, menta', 95, 100, 40, 1),
+('Jo Malone Lime Basil & Mandarin', 'Jo Malone', 'Lima, albahaca, mandarina', 120, 100, 35, 1),
+('Dolce & Gabbana Light Blue', 'Dolce & Gabbana', 'Limon siciliano, manzana, cedro', 110, 100, 45, 1);
