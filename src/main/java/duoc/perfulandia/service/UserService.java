@@ -31,7 +31,6 @@ public class UserService {
         cartRepo.save(cart);
         return savedUser;
     }
-
     // read
     public List<User> getAllUsers() {
         return userRepo.findAll();
