@@ -15,9 +15,9 @@ public class ReviewService {
     private ReviewRepo reviewRepo;
     @Autowired
     private ProductRepo productRepo;
-
+    
     public Review addReview(Long productId, Review review) {
-        Product product = productRepo.findById(productId);
+        Optional<Product> productOpt = productRepo.findById(productId);
         if (productOpt.isEmpty()) throw new RuntimeException("Producto no encontrado");
 
         review.setProduct(productOpt.get());
