@@ -1,9 +1,8 @@
 package duoc.perfulandia.service;
-import duoc.perfulandia.model.Repo.CategoryRepo;
-import duoc.perfulandia.model.Repo.ProductRepo;
+import duoc.perfulandia.repo.CategoryRepo;
+import duoc.perfulandia.repo.ProductRepo;
 import duoc.perfulandia.model.Product;
 import duoc.perfulandia.model.Category;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

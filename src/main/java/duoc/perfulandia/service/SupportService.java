@@ -1,7 +1,7 @@
 package duoc.perfulandia.service;
 
-import duoc.perfulandia.model.Repo.SupportTicketRepo;
-import duoc.perfulandia.model.Repo.UserRepo;
+import duoc.perfulandia.repo.SupportTicketRepo;
+import duoc.perfulandia.repo.UserRepo;
 import duoc.perfulandia.model.SupportTicket;
 import duoc.perfulandia.model.TicketStatus;
 import duoc.perfulandia.model.User;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class SupportService {

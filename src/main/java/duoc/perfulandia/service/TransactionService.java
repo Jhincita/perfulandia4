@@ -1,12 +1,11 @@
 package duoc.perfulandia.service;
 import duoc.perfulandia.model.Order;
 import duoc.perfulandia.model.OrderStatus;
-import duoc.perfulandia.model.Repo.OrderRepo;
+import duoc.perfulandia.repo.OrderRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 // manejar transacciones de cualquier tipo
 @Service

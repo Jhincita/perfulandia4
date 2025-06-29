@@ -1,4 +1,4 @@
-package duoc.perfulandia.model.Repo;
+package duoc.perfulandia.repo;
 
 import duoc.perfulandia.model.Order;
 import duoc.perfulandia.model.OrderStatus;

@@ -1,17 +1,14 @@
 package duoc.perfulandia.service;
 import duoc.perfulandia.model.*;
-import duoc.perfulandia.model.Repo.CartRepo;
-import duoc.perfulandia.model.Repo.OrderRepo;
-import duoc.perfulandia.model.Repo.ProductRepo;
-import duoc.perfulandia.model.Repo.UserRepo;
-import duoc.perfulandia.service.CartService;
+import duoc.perfulandia.repo.CartRepo;
+import duoc.perfulandia.repo.OrderRepo;
+import duoc.perfulandia.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 // crear ordenes y manejar estados de ordenes

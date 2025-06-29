@@ -1,15 +1,11 @@
 package duoc.perfulandia.service;
 import duoc.perfulandia.model.*;
-import duoc.perfulandia.model.Repo.EmployeeRepo;
-import duoc.perfulandia.model.Repo.RoleRepo;
-import duoc.perfulandia.service.CartService;
+import duoc.perfulandia.repo.EmployeeRepo;
+import duoc.perfulandia.repo.RoleRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
