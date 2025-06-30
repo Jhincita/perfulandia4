@@ -72,7 +72,7 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- DATAFAKER para hacer data falsa para las pruebas-->
+		<!-- DATAFAKER -->
 		<dependency>
 			<groupId>net.datafaker</groupId>
 			<artifactId>datafaker</artifactId>
@@ -85,6 +85,13 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-crypto</artifactId>
 		</dependency>
+		<!-- Jason Web Token -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
+		</dependency>
+
 
 
 
