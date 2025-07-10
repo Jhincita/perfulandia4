@@ -1,5 +1,4 @@
 package duoc.perfulandia.model;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,23 +13,21 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 
-// REVISAR:
+// >> FUNCIONA, NO TOCAR.
 @Entity
-@Table(name = "cart")
-
-public class Cart {
+@Table(name = "users")
+public class Customer implements User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String username;
+    private String email;
+    private String password;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    @JsonBackReference
-    private Customer user;
-
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user") // sin orphan removallñ para no borrar las ordenes si se borra el usuario
     @JsonManagedReference
-    private List<CartItem> items;
+    private List<Order> orders;
 
-
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Cart cart;
 }

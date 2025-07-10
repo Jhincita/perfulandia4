@@ -2,7 +2,7 @@ package duoc.perfulandia.repo;
 
 import duoc.perfulandia.model.Order;
 import duoc.perfulandia.model.OrderStatus;
-import duoc.perfulandia.model.User;
+import duoc.perfulandia.model.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public interface OrderRepo extends JpaRepository<Order, Long> {
     Optional<Order> findFirstByUserIdAndStatus(Long userId, OrderStatus status);
 
 
-    List<Order> findByUser(Optional<User> user);
+    List<Order> findByUser(Optional<Customer> user);
 
     List<Order> findByStatus(OrderStatus status);
 }

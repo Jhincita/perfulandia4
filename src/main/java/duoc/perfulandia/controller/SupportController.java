@@ -1,5 +1,7 @@
 package duoc.perfulandia.controller;
+import duoc.perfulandia.dto.AnswerRequestDTO;
 import duoc.perfulandia.model.SupportTicket;
+import duoc.perfulandia.model.TicketResponse;
 import duoc.perfulandia.model.TicketStatus;
 import duoc.perfulandia.service.SupportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,15 +42,17 @@ public class SupportController {
         return ResponseEntity.ok(supportService.getOpenTickets(userId));
     }
 
-    //update answer
+    //update : answer
     @PutMapping("/respond/{ticketId}")
-    public ResponseEntity<SupportTicket> respondTicket(
+    public ResponseEntity<TicketResponse> respondTicket(
             @PathVariable Long ticketId,
-            @RequestBody String answer) {
-        return ResponseEntity.ok(supportService.answerTicket(ticketId, answer));
+            @RequestBody AnswerRequestDTO request) {
+        return ResponseEntity.ok(
+                supportService.answerTicket(ticketId, request)
+        );
     }
 
-    //update close
+    //update :close
     @PutMapping("/close/{ticketId}")
     public ResponseEntity<SupportTicket> closeTicket(@PathVariable Long ticketId) {
         return ResponseEntity.ok(supportService.closeTicket(ticketId));

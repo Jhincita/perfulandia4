@@ -1,6 +1,6 @@
 package duoc.perfulandia.controller;
 
-import duoc.perfulandia.model.User;
+import duoc.perfulandia.model.Customer;
 import duoc.perfulandia.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +25,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody CreateUserDTO dto) {
-        User newUser = userService.createUser(dto);
+        Customer newUser = userService.createUser(dto);
         return ResponseEntity.ok(userMapper.toDTO(newUser)); // devuelve el userdto, no el user.
     }
 

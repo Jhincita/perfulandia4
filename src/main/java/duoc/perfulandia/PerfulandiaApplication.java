@@ -9,5 +9,4 @@ public class PerfulandiaApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PerfulandiaApplication.class, args);
 	}
-
 }

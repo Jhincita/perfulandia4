@@ -26,9 +26,11 @@ public class ProductService {
     }
 
     // read
-    public Optional<Product> getProduct(Long id) {
-        return productRepo.findById(id);
+    public Product getProductById(Long id) {
+        return productRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado de ID: " + id));
     }
+
     public List<Product> getAllProducts() {
         return productRepo.findAll();
     }
@@ -36,7 +38,7 @@ public class ProductService {
 
     public Product updateProduct(Product updatedProduct) {
         Product existingProduct = productRepo.findById(updatedProduct.getId())
-                .orElseThrow(() -> new RuntimeException("Product not found with ID: " + updatedProduct.getId()));
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado de ID: " + updatedProduct.getId()));
 
         existingProduct.setName(updatedProduct.getName());
         existingProduct.setBrand(updatedProduct.getBrand());

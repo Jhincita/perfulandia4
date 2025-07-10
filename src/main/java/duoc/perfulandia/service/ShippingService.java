@@ -3,7 +3,7 @@ package duoc.perfulandia.service;
 import duoc.perfulandia.model.Order;
 import duoc.perfulandia.model.OrderStatus;
 import duoc.perfulandia.repo.OrderRepo;
-import duoc.perfulandia.repo.UserRepo;
+import duoc.perfulandia.repo.CustomerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ public class ShippingService {
     private OrderRepo orderRepo;
 
     @Autowired
-    private UserRepo userRepo;
+    private CustomerRepo userRepo;
 
     // get all orders with status: processing
     public List<Order> getAllProcessingOrders(){

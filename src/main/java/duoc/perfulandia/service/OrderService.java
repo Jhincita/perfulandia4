@@ -2,7 +2,7 @@ package duoc.perfulandia.service;
 import duoc.perfulandia.model.*;
 import duoc.perfulandia.repo.CartRepo;
 import duoc.perfulandia.repo.OrderRepo;
-import duoc.perfulandia.repo.UserRepo;
+import duoc.perfulandia.repo.CustomerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ import java.util.Optional;
 @Service
 public class OrderService {
     @Autowired
-    private UserRepo userRepo;
+    private CustomerRepo userRepo;
     @Autowired
     private OrderRepo orderRepo;
     @Autowired
@@ -24,7 +24,7 @@ public class OrderService {
     @Autowired
     private CartService cartService;
 
-    public OrderService(UserRepo userRepo, OrderRepo orderRepo, CartRepo cartRepo, CartService cartService) {
+    public OrderService(CustomerRepo userRepo, OrderRepo orderRepo, CartRepo cartRepo, CartService cartService) {
         this.userRepo = userRepo;
         this.orderRepo = orderRepo;
         this.cartRepo = cartRepo;
@@ -49,7 +49,7 @@ public class OrderService {
     // 1er paso del checkout: crear orden- > status : PAYMENT_PENDING
     public Order checkoutNewOrder(Long userId){
         // validar user
-        Optional<User> userOpt = userRepo.findById(userId);
+        Optional<Customer> userOpt = userRepo.findById(userId);
         if (userOpt.isEmpty()) {
             throw new RuntimeException("Usuario no encontrado con ID: " + userId);
         }

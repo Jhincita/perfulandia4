@@ -3,7 +3,7 @@ import duoc.perfulandia.model.*;
 import duoc.perfulandia.repo.CartRepo;
 import duoc.perfulandia.repo.OrderRepo;
 import duoc.perfulandia.repo.ProductRepo;
-import duoc.perfulandia.repo.UserRepo;
+import duoc.perfulandia.repo.CustomerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ import java.util.Optional;
 public class CartService {
 
     @Autowired
-    private UserRepo userRepo;
+    private CustomerRepo userRepo;
     @Autowired
     private OrderRepo orderRepo;
     @Autowired
@@ -26,7 +26,7 @@ public class CartService {
 
     // create by userid
     public Cart createCart(Long userId) {
-        Optional<User> userOpt = userRepo.findById(userId);
+        Optional<Customer> userOpt = userRepo.findById(userId);
         if (userOpt.isEmpty()) {
             throw new RuntimeException("No existe USERID: " + userId);
         }
